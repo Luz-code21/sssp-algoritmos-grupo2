@@ -4,7 +4,7 @@
 Escuela Profesional de Ingeniería Informática y de Sistemas
 Curso: Algoritmos Avanzados — Grupo 2
 
-Artículo científico (formato IEEE): [`articulo_IEEE.pdf`](./articulo_IEEE.pdf)
+
 
 ## Integrantes
 
@@ -57,7 +57,7 @@ cmake --build .
 ./benchmarks
 ```
 
-### Traducción propia de BMSSP (verificación de correctitud)
+### Traducción propia de BMSSP 
 
 Abrir `implementacin-4-Breaking the sorting barrier/BMSSP/BMSSP.sln` en Visual Studio 2022, compilar en modo *Release* y ejecutar `main.cpp`.
 
@@ -98,11 +98,10 @@ El resumen completo con tablas y discusión está en el artículo (`articulo_IEE
 
 ## Capturas de funcionamiento
 
-_(Agregar aquí 1–2 capturas de pantalla: por ejemplo, la salida de `./test_correctness` mostrando "TODOS LOS TESTS PASARON", o el CSV de resultados generado por alguno de los benchmarks.)_
+
 
 ## Historial de commits y trabajo colaborativo
 
-El historial de commits evidencia la participación de los cuatro integrantes en distintas partes del proyecto:
 
 - **Sebastian Chávez** — aporte de modificación BMSSP, implementación 3 (Castro et al. original).
 - **Graciela Ccansaya** — implementación 4 (traducción propia de BMSSP, Visual Studio).
