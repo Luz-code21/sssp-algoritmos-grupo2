@@ -1,85 +1,86 @@
-# Benchmark: Dijkstra con Binary Heap, Fibonacci Heap y BST
+# Benchmark: Dijkstra with Binary Heap, Fibonacci Heap, and BST
 
-Implementación para reproducir el experimento de:
+Implementation to reproduce the experiment from:
 
 > Lewis, R. (2023). *A Comparison of Dijkstra's Algorithm Using Fibonacci
 > Heaps, Binary Heaps, and Self-Balancing Binary Trees*. arXiv:2303.10034.
 
-## ¿Qué hace este código?
+## What does this code do?
 
-Implementa tres variantes del algoritmo de Dijkstra, cada una usando una
-estructura de datos distinta para la cola de prioridad:
+It implements three variants of Dijkstra's algorithm, each using a
+different data structure for the priority queue:
 
-1. **Binary Heap** (`include/dijkstra_binary_heap.hpp`) — usa
-   `std::priority_queue` con la técnica de *lazy deletion* (no soporta
-   decrease-key nativo, así que se insertan entradas duplicadas y se
-   descartan las obsoletas al extraer). Complejidad: O(m log m).
-2. **Fibonacci Heap** (`include/dijkstra_fibonacci_heap.hpp`) — usa una
-   implementación propia de Fibonacci Heap (`include/fibonacci_heap.hpp`)
-   con decrease-key real en O(1) amortizado. Complejidad: O(m + n log n).
-3. **Árbol Autobalanceado / BST** (`include/dijkstra_bst.hpp`) — usa
-   `std::set` (red-black tree en la implementación estándar de C++), con
-   decrease-key real mediante borrar+insertar en O(log n). Complejidad:
+1. **Binary Heap** (`include/dijkstra_binary_heap.hpp`) — uses
+   `std::priority_queue` with the *lazy deletion* technique (no native
+   decrease-key support, so duplicate entries are inserted and stale
+   ones are discarded on extraction). Complexity: O(m log m).
+2. **Fibonacci Heap** (`include/dijkstra_fibonacci_heap.hpp`) — uses a
+   custom Fibonacci Heap implementation (`include/fibonacci_heap.hpp`)
+   with real O(1) amortized decrease-key. Complexity: O(m + n log n).
+3. **Self-Balancing Tree / BST** (`include/dijkstra_bst.hpp`) — uses
+   `std::set` (red-black tree in the standard C++ implementation), with
+   real decrease-key via delete+insert in O(log n). Complexity:
    O(m log n).
 
-El programa principal (`src/benchmark.cpp`) genera grafos dirigidos
-ponderados aleatorios —dispersos y densos, de distintos tamaños `n`— corre
-las tres variantes sobre cada grafo, verifica que las tres produzcan
-exactamente las mismas distancias, mide el tiempo de ejecución de cada una,
-y exporta todo a un archivo CSV.
+The main program (`src/benchmark.cpp`) generates random weighted
+directed graphs — sparse and dense, of different sizes `n` — runs
+the three variants on each graph, verifies that all three produce
+exactly the same distances, measures the execution time of each one,
+and exports everything to a CSV file.
 
-## Estructura del proyecto
+## Project structure
 
 ```
 sssp_benchmark/
 ├── include/
-│   ├── graph.hpp                    # Estructura del grafo (lista de adyacencia)
-│   ├── graph_generator.hpp          # Generador de grafos aleatorios (sparse/dense)
-│   ├── fibonacci_heap.hpp           # Implementación de Fibonacci Heap
-│   ├── dijkstra_binary_heap.hpp     # Dijkstra con binary heap
-│   ├── dijkstra_fibonacci_heap.hpp  # Dijkstra con Fibonacci heap
-│   ├── dijkstra_bst.hpp             # Dijkstra con BST (std::set)
-│   └── verify.hpp                   # Comparación de resultados con tolerancia numérica
+│   ├── graph.hpp                    # Graph structure (adjacency list)
+│   ├── graph_generator.hpp          # Random graph generator (sparse/dense)
+│   ├── fibonacci_heap.hpp           # Fibonacci Heap implementation
+│   ├── dijkstra_binary_heap.hpp     # Dijkstra with binary heap
+│   ├── dijkstra_fibonacci_heap.hpp  # Dijkstra with Fibonacci heap
+│   ├── dijkstra_bst.hpp             # Dijkstra with BST (std::set)
+│   └── verify.hpp                   # Result comparison with numerical tolerance
 ├── src/
-│   ├── benchmark.cpp                # Programa principal: corre el experimento completo
-│   └── test_correctness.cpp         # Tests unitarios de corrección
+│   ├── benchmark.cpp                # Main program: runs the full experiment
+│   └── test_correctness.cpp         # Unit tests for correctness
 ├── scripts/
-│   └── plot_results.py              # Genera gráficas a partir del CSV de resultados
-├── results/                         # Aquí se guardan los CSV y figuras generadas
+│   └── plot_results.py              # Generates charts from the results CSV
+├── results/                         # Generated CSVs and figures are saved here
 └── README.md
 ```
 
-## Cómo compilar
+## How to build
 
-Se requiere un compilador con soporte de C++17 (g++ 7+ o equivalente).
+A compiler with C++17 support is required (g++ 7+ or equivalent).
 
 ```bash
-# Test de corrección (recomendado correr primero)
+# Correctness test (recommended to run first)
 g++ -O2 -std=c++17 -I include src/test_correctness.cpp -o test_correctness
 ./test_correctness
 
-# Benchmark completo
+# Full benchmark
 g++ -O2 -std=c++17 -I include src/benchmark.cpp -o benchmark
 ```
 
-Si `test_correctness` no imprime "TODOS LOS TESTS PASARON", hay un problema
-en la implementación y **no se debe** confiar en los resultados del
-benchmark.
+If `test_correctness` does not print "ALL TESTS PASSED", there is a
+problem in the implementation and the benchmark results **should not**
+be trusted.
 
-## Cómo ejecutar el benchmark
+## How to run the benchmark
 
 ```bash
 ./benchmark > results/benchmark_results.csv
 ```
 
-Esto puede tardar desde unos segundos hasta varios minutos, dependiendo de
-los tamaños de `n` configurados (ver más abajo) y de la velocidad de la
-máquina. Cualquier advertencia de discrepancia entre algoritmos se imprime
-por `stderr`, no por `stdout`, así que no contamina el CSV.
+This can take anywhere from a few seconds to several minutes, depending
+on the configured `n` sizes (see below) and the speed of the machine.
+Any warning about discrepancies between algorithms is printed to
+`stderr`, not `stdout`, so it does not pollute the CSV.
 
-### Ajustar los tamaños de grafo evaluados
+### Adjusting the evaluated graph sizes
 
-Dentro de `src/benchmark.cpp`, al inicio de `main()`, se pueden modificar:
+Inside `src/benchmark.cpp`, at the beginning of `main()`, the following
+can be modified:
 
 ```cpp
 std::vector<int> sparseSizes   = {100, 200, 500, 1000, 2000, 5000, 10000, 20000};
@@ -87,69 +88,69 @@ std::vector<int> denseSizesArg = {100, 200, 500, 1000, 2000};
 int repetitions = 5;
 ```
 
-- `sparseSizes`: tamaños de `n` para grafos dispersos (grado de salida
-  promedio fijo, m = O(n)).
-- `denseSizesArg`: tamaños de `n` para grafos densos (m ≈ 0.3·n²). Cuidado:
-  estos crecen cuadráticamente en número de aristas, así que valores de
-  `n` mayores a ~3000-5000 pueden tardar bastante, especialmente en la
-  variante BST.
-- `repetitions`: número de repeticiones por configuración (para promediar
-  y reducir el ruido de medición). Se recomienda al menos 5; para resultados
-  más estables en el informe final, considerar 10-20 si el tiempo total lo
-  permite.
+- `sparseSizes`: `n` sizes for sparse graphs (fixed average out-degree,
+  m = O(n)).
+- `denseSizesArg`: `n` sizes for dense graphs (m ≈ 0.3·n²). Careful:
+  these grow quadratically in the number of edges, so `n` values
+  greater than ~3000-5000 can take quite a while, especially for the
+  BST variant.
+- `repetitions`: number of repetitions per configuration (to average
+  out and reduce measurement noise). At least 5 is recommended; for
+  more stable results in the final report, consider 10-20 if the total
+  time allows it.
 
-Después de modificar, recompilar con el mismo comando de arriba.
+After modifying, recompile with the same command as above.
 
-## Cómo generar las gráficas
+## How to generate the charts
 
-Requiere Python 3 con `pandas` y `matplotlib`:
+Requires Python 3 with `pandas` and `matplotlib`:
 
 ```bash
 pip install pandas matplotlib
 python3 scripts/plot_results.py results/benchmark_results.csv
 ```
 
-Esto genera:
+This generates:
 - `results/figures/tiempo_vs_n_sparse.png`
 - `results/figures/tiempo_vs_n_dense.png`
-- `results/figures/resumen_tabla.csv` (tabla con tiempo promedio y
-  desviación estándar por configuración, lista para pegar en el informe)
+- `results/figures/resumen_tabla.csv` (table with average time and
+  standard deviation per configuration, ready to paste into the report)
 
-## Formato del CSV de resultados
+## Results CSV format
 
-| Columna             | Descripción                                                       |
+| Column               | Description                                                       |
 |----------------------|--------------------------------------------------------------------|
-| `tipo_grafo`         | `sparse` o `dense`                                                  |
-| `n`                  | Número de vértices                                                  |
-| `m`                  | Número de aristas generadas (real, no el objetivo)                  |
-| `densidad_objetivo`  | Parámetro de densidad usado para generar el grafo                   |
-| `semilla`            | Semilla aleatoria usada (para reproducibilidad exacta)               |
-| `algoritmo`          | `binary_heap`, `fibonacci_heap`, o `bst`                             |
-| `tiempo_ms`          | Tiempo de ejecución medido, en milisegundos                          |
-| `distancia_total`    | Suma de todas las distancias finitas (chequeo rápido de consistencia)|
-| `correcto`           | 1 si coincide con `binary_heap` (referencia), 0 si hay discrepancia   |
+| `tipo_grafo`         | `sparse` or `dense`                                                 |
+| `n`                  | Number of vertices                                                  |
+| `m`                  | Number of edges generated (actual, not the target)                  |
+| `densidad_objetivo`  | Density parameter used to generate the graph                        |
+| `semilla`            | Random seed used (for exact reproducibility)                        |
+| `algoritmo`          | `binary_heap`, `fibonacci_heap`, or `bst`                            |
+| `tiempo_ms`          | Measured execution time, in milliseconds                            |
+| `distancia_total`    | Sum of all finite distances (quick consistency check)                |
+| `correcto`           | 1 if it matches `binary_heap` (reference), 0 if there is a discrepancy |
 
-## Qué hacer con los resultados
+## What to do with the results
 
-1. Correr `test_correctness` y confirmar que todo pasa.
-2. Correr `benchmark` y guardar el CSV.
-3. Correr `plot_results.py` para generar las gráficas.
-4. Revisar la columna `correcto`: debe ser 1 en todas las filas. Si hay
-   algún 0, avisar antes de usar esos datos en el informe.
-5. Compartir el CSV completo (`results/benchmark_results.csv`) y las
-   especificaciones de hardware/software de la máquina donde se corrió
-   (sección 1.2 de la plantilla de experimentación), para poder construir
-   el capítulo de experimentación con datos reales.
+1. Run `test_correctness` and confirm that everything passes.
+2. Run `benchmark` and save the CSV.
+3. Run `plot_results.py` to generate the charts.
+4. Check the `correcto` column: it should be 1 in every row. If there is
+   any 0, flag it before using that data in the report.
+5. Share the full CSV (`results/benchmark_results.csv`) and the
+   hardware/software specifications of the machine it was run on
+   (section 1.2 of the experimentation template), so the experimentation
+   chapter can be built with real data.
 
-## Notas sobre el diseño experimental (relevantes para el informe)
+## Notes on the experimental design (relevant for the report)
 
-- El grafo se genera garantizando primero un árbol aleatorio con raíz en
-  el vértice 0 (la fuente), de modo que todos los vértices sean alcanzables
-  desde la fuente — esto es necesario para que Dijkstra produzca distancias
-  finitas a todos los nodos y la comparación entre algoritmos sea
-  significativa.
-- Los pesos de las aristas son reales no negativos, generados uniformemente
-  en `[1.0, 1000.0]` por defecto (ver `graph_generator.hpp`).
-- La verificación de corrección compara las distancias finales de las tres
-  variantes con una tolerancia numérica de `1e-6`, apropiada para
-  aritmética de punto flotante (`double`).
+- The graph is generated by first guaranteeing a random tree rooted at
+  vertex 0 (the source), so that all vertices are reachable from the
+  source — this is necessary for Dijkstra to produce finite distances
+  to every node and for the comparison between algorithms to be
+  meaningful.
+- Edge weights are non-negative reals, generated uniformly in
+  `[1.0, 1000.0]` by default (see `graph_generator.hpp`).
+- The correctness check compares the final distances of the three
+  variants with a numerical tolerance of `1e-6`, appropriate for
+  floating-point arithmetic (`double`).

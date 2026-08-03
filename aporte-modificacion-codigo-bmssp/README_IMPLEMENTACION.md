@@ -1,27 +1,27 @@
-# Implementación 2: BMSSP - 
+# Implementation 2: BMSSP -
 Castro et al. (2025)
 
-Esta carpeta contiene la implementación utilizada para analizar el algoritmo BMSSP aplicado al problema Single-Source Shortest Paths (SSSP).
+This folder contains the implementation used to analyze the BMSSP algorithm applied to the Single-Source Shortest Paths (SSSP) problem.
 
-## Paper trabajado
+## Paper worked on
 
 **Implementation and Experimental Analysis of the Duan et al. (2025) Algorithm for Single-Source Shortest Paths**
 
-El trabajo compara el algoritmo BMSSP con Dijkstra usando diferentes grafos de prueba.
+The paper compares the BMSSP algorithm with Dijkstra using different test graphs.
 
-## Algoritmos incluidos
+## Algorithms included
 
 - Dijkstra
 - BMSSP-WC
 - BMSSP-EXPECTED
 
-## Aporte implementado
+## Contribution implemented
 
-Se agregó una optimización interna sobre BMSSP-WC denominada:
+An internal optimization was added on top of BMSSP-WC called:
 
 **BMSSP-DedupPivots + EarlyStop**
 
-La modificación se realizó en:
+The modification was made in:
 
 ```text
 include/bmssp-worst-case.hpp

@@ -1,55 +1,55 @@
-# Comparación de Algoritmos SSSP: Dijkstra vs. BMSSP
+# SSSP Algorithm Comparison: Dijkstra vs. BMSSP
 
 **Universidad Nacional de San Antonio Abad del Cusco (UNSAAC)**
-Escuela Profesional de Ingeniería Informática y de Sistemas
-Curso: Algoritmos Avanzados — Grupo 2
+Professional School of Computer and Systems Engineering
+Course: Advanced Algorithms — Group 2
 
 
 
-## Integrantes
+## Members
 
-| Integrante | Código |
+| Member | Code |
 |---|---|
 | Luz Diana Ancasi Aymachoque | 215714 |
 | Yhasmin Graciela Ccansaya Corrales | 230249 |
 | Bryan Sebastian Chávez Luna | 215817 |
 | Nohemi Sharit Cuba Castillo | 230250 |
 
-## Descripción general
+## Overview
 
-Este repositorio documenta la comparación experimental entre el algoritmo clásico de **Dijkstra** y el algoritmo determinista **BMSSP** (*Bounded Multi-Source Shortest Path*, Duan et al., STOC 2025), que rompe la barrera de ordenamiento clásica de Dijkstra en grafos dirigidos dispersos. Se replican y extienden los benchmarks de tres trabajos recientes (Castro et al. 2025, Valko et al. 2025, Lewis 2023), y se propone una optimización original sobre BMSSP: **BMSSP-DedupPivots+EarlyStop**.
+This repository documents the experimental comparison between the classic **Dijkstra** algorithm and the deterministic **BMSSP** algorithm (*Bounded Multi-Source Shortest Path*, Duan et al., STOC 2025), which breaks Dijkstra's classic sorting barrier on sparse directed graphs. It replicates and extends the benchmarks from three recent works (Castro et al. 2025, Valko et al. 2025, Lewis 2023), and proposes an original optimization on top of BMSSP: **BMSSP-DedupPivots+EarlyStop**.
 
-Cada carpeta de este repositorio corresponde a una implementación o experimento distinto, con su propio README detallado. Este documento es el punto de entrada general.
+Each folder in this repository corresponds to a distinct implementation or experiment, with its own detailed README. This document is the general entry point.
 
-## Estructura del repositorio
+## Repository structure
 
-| Carpeta | Contenido | ¿Qué es? |
+| Folder | Content | What is it? |
 |---|---|---|
-| **`aporte-modificacion-codigo-bmssp/`** | C++20, header-only, basado en la implementación de Castro et al. | **Aporte original del grupo**: optimización BMSSP-DedupPivots+EarlyStop sobre el código de Castro et al. Ver `README_IMPLEMENTACION.md` dentro de esta carpeta para el detalle de la modificación. |
-| **`implementacin-4-Breaking the sorting barrier/BMSSP`** | C++ (Visual Studio 2022, `.sln`) | Traducción propia e independiente del algoritmo BMSSP (a partir de la referencia en Go de Duan et al.), usada para verificar correctitud sobre grafos pequeños (Sección III del artículo). |
-| **`implementacion-1-lewis-2023-dijkstra-heaps/`** | C++17 | Réplica del experimento de Lewis (2023): Dijkstra con binary heap, Fibonacci heap y árbol autobalanceado (BST). |
-| **`implementacion-2-rap2363-ssps/`** | Rust | Repositorio base (de terceros) con Dijkstra y BMSSP en Rust, usado para correr pruebas sobre grafos reales (OSM), incluyendo el grafo de Washington D.C. citado en el artículo. |
-| **`implementacion-2-ln-bmssp-evaluation/`** | Python / Jupyter | Notebook de análisis experimental asociado al paper de BMSSP aplicado a la Lightning Network (Valko et al., 2025). |
-| **`implementacion-3-castro-2025-bmssp-original/`** | C++20, header-only | Implementación original (sin modificar) de Castro et al. (2025), usada como código base para el benchmark extendido de la Tabla 2 del artículo. |
+| **`aporte-modificacion-codigo-bmssp/`** | C++20, header-only, based on Castro et al.'s implementation | **Original contribution of the group**: BMSSP-DedupPivots+EarlyStop optimization on top of Castro et al.'s code. See `README_IMPLEMENTACION.md` inside this folder for details on the modification. |
+| **`implementacin-4-Breaking the sorting barrier/BMSSP`** | C++ (Visual Studio 2022, `.sln`) | Own, independent translation of the BMSSP algorithm (from Duan et al.'s Go reference), used to verify correctness on small graphs (Section III of the paper). |
+| **`implementacion-1-lewis-2023-dijkstra-heaps/`** | C++17 | Replication of Lewis's (2023) experiment: Dijkstra with binary heap, Fibonacci heap, and self-balancing tree (BST). |
+| **`implementacion-2-rap2363-ssps/`** | Rust | Third-party base repository with Dijkstra and BMSSP in Rust, used to run tests on real graphs (OSM), including the Washington D.C. graph cited in the paper. |
+| **`implementacion-2-ln-bmssp-evaluation/`** | Python / Jupyter | Experimental analysis notebook associated with the BMSSP paper applied to the Lightning Network (Valko et al., 2025). |
+| **`implementacion-3-castro-2025-bmssp-original/`** | C++20, header-only | Original (unmodified) implementation by Castro et al. (2025), used as the baseline code for the extended benchmark in Table 2 of the paper. |
 
-> **Nota:** las carpetas `implementacion-3-castro-2025-bmssp-original/` y `aporte-modificacion-codigo-bmssp/` parten del mismo código de Castro et al.; la diferencia es que la segunda incluye la modificación propia del grupo (DedupPivots+EarlyStop). No confundir una con otra al revisar el aporte original.
+> **Note:** the `implementacion-3-castro-2025-bmssp-original/` and `aporte-modificacion-codigo-bmssp/` folders start from the same Castro et al. code; the difference is that the latter includes the group's own modification (DedupPivots+EarlyStop). Don't confuse one with the other when reviewing the original contribution.
 
-## Requisitos e instalación por módulo
+## Requirements and installation per module
 
-| Módulo | Requisitos |
+| Module | Requirements |
 |---|---|
 | `aporte-modificacion-codigo-bmssp/`, `implementacion-3-castro-2025-bmssp-original/` | C++20, CMake |
-| `implementacin-4-Breaking the sorting barrier/BMSSP` | Visual Studio 2022 (o MSVC con soporte C++17/20) |
-| `implementacion-1-lewis-2023-dijkstra-heaps/` | g++ 7+ (C++17), Python 3 + `pandas` + `matplotlib` (solo para graficar) |
-| `implementacion-2-rap2363-ssps/` | Rust (`rustup`, edición 2021+), Cargo |
-| `implementacion-2-ln-bmssp-evaluation/` | Python 3.10+, Jupyter, dependencias en `pyproject.toml` |
+| `implementacin-4-Breaking the sorting barrier/BMSSP` | Visual Studio 2022 (or MSVC with C++17/20 support) |
+| `implementacion-1-lewis-2023-dijkstra-heaps/` | g++ 7+ (C++17), Python 3 + `pandas` + `matplotlib` (for plotting only) |
+| `implementacion-2-rap2363-ssps/` | Rust (`rustup`, 2021+ edition), Cargo |
+| `implementacion-2-ln-bmssp-evaluation/` | Python 3.10+, Jupyter, dependencies in `pyproject.toml` |
 
-## Cómo compilar y ejecutar cada módulo
+## How to build and run each module
 
-### Aporte propio y BMSSP original (Castro et al.)
+### Own contribution and original BMSSP (Castro et al.)
 
 ```bash
-cd aporte-modificacion-codigo-bmssp   # o implementacion-3-castro-2025-bmssp-original
+cd aporte-modificacion-codigo-bmssp   # or implementacion-3-castro-2025-bmssp-original
 cmake -B build
 cd build
 cmake --build .
@@ -57,22 +57,22 @@ cmake --build .
 ./benchmarks
 ```
 
-### Traducción propia de BMSSP 
+### Own translation of BMSSP
 
-Abrir `implementacin-4-Breaking the sorting barrier/BMSSP/BMSSP.sln` en Visual Studio 2022, compilar en modo *Release* y ejecutar `main.cpp`.
+Open `implementacin-4-Breaking the sorting barrier/BMSSP/BMSSP.sln` in Visual Studio 2022, build in *Release* mode, and run `main.cpp`.
 
-### Comparación de estructuras de datos (Lewis 2023)
+### Data structure comparison (Lewis 2023)
 
 ```bash
 cd implementacion-1-lewis-2023-dijkstra-heaps
 g++ -O2 -std=c++17 -I include src/test_correctness.cpp -o test_correctness
-./test_correctness      # debe imprimir "TODOS LOS TESTS PASARON"
+./test_correctness      # should print "ALL TESTS PASSED"
 g++ -O2 -std=c++17 -I include src/benchmark.cpp -o benchmark
 ./benchmark > results/benchmark_results.csv
 python3 scripts/plot_results.py results/benchmark_results.csv
 ```
 
-### Grafo real de Washington D.C. (Rust)
+### Real Washington D.C. graph (Rust)
 
 ```bash
 cd implementacion-2-rap2363-ssps
@@ -87,27 +87,27 @@ cd implementacion-2-ln-bmssp-evaluation
 jupyter notebook analysis.ipynb
 ```
 
-## Resultados principales
+## Main results
 
-El resumen completo con tablas y discusión está en el artículo (`articulo_IEEE.pdf`, Secciones VII y VIII). En síntesis:
+The complete summary with tables and discussion is in the paper (`articulo_IEEE.pdf`, Sections VII and VIII). In summary:
 
-- Dijkstra fue consistentemente más rápido que BMSSP-WC y BMSSP-Expected en todas las instancias evaluadas (grafos dispersos aleatorios, de cuadrícula y la red vial real `USA-road-t.NY`).
-- La optimización propia **BMSSP-DedupPivots+EarlyStop** redujo el tiempo de ejecución de BMSSP-WC entre ~1% y ~2% según la instancia, sin alterar su complejidad asintótica.
-- En el grafo real de Washington D.C., Dijkstra fue ~2.86× más rápido que BMSSP-WC, consistente con lo reportado por Valko et al. (2025) para la Lightning Network (~3-4x en sus propias pruebas).
-- El montículo binario (Lewis 2023) resultó más rápido que el montículo de Fibonacci en todos los escenarios evaluados, pese a su peor complejidad teórica.
+- Dijkstra was consistently faster than BMSSP-WC and BMSSP-Expected across all evaluated instances (random sparse graphs, grid graphs, and the real road network `USA-road-t.NY`).
+- The original **BMSSP-DedupPivots+EarlyStop** optimization reduced BMSSP-WC's execution time by ~1% to ~2% depending on the instance, without altering its asymptotic complexity.
+- On the real Washington D.C. graph, Dijkstra was ~2.86× faster than BMSSP-WC, consistent with what was reported by Valko et al. (2025) for the Lightning Network (~3-4x in their own tests).
+- The binary heap (Lewis 2023) turned out to be faster than the Fibonacci heap in all evaluated scenarios, despite its worse theoretical complexity.
 
-## Capturas de funcionamiento
-
-
-
-## Historial de commits y trabajo colaborativo
+## Screenshots
 
 
-- **Sebastian Chávez** — aporte de modificación BMSSP, implementación 3 (Castro et al. original).
-- **Graciela Ccansaya** — implementación 4 (traducción propia de BMSSP, Visual Studio).
-- **Luz Ancasi** — implementación 1 (Lewis 2023, comparación de heaps).
-- **Nohemi Cuba** — implementación 2 (Lightning Network y grafo real de Washington D.C.).
 
-## Licencia
+## Commit history and collaborative work
 
-Proyecto académico desarrollado para el curso de Algoritmos Avanzados, UNSAAC, 2026. Las carpetas `implementacion-3-castro-2025-bmssp-original/`, `implementacion-2-rap2363-ssps/` e `implementacion-2-ln-bmssp-evaluation/` contienen código de terceros (con su propia licencia y atribución, ver cada `README.md` interno) usado como base para la experimentación; el resto del código es aporte propio del grupo.
+
+- **Sebastian Chávez** — BMSSP modification contribution, implementation 3 (original Castro et al.).
+- **Graciela Ccansaya** — implementation 4 (own translation of BMSSP, Visual Studio).
+- **Luz Ancasi** — implementation 1 (Lewis 2023, heap comparison).
+- **Nohemi Cuba** — implementation 2 (Lightning Network and real Washington D.C. graph).
+
+## License
+
+Academic project developed for the Advanced Algorithms course, UNSAAC, 2026. The `implementacion-3-castro-2025-bmssp-original/`, `implementacion-2-rap2363-ssps/`, and `implementacion-2-ln-bmssp-evaluation/` folders contain third-party code (with its own license and attribution, see each internal `README.md`) used as a base for experimentation; the rest of the code is the group's own contribution.
